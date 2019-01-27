@@ -1,0 +1,49 @@
+{
+  "name": "ubq-usagiv2-layers-atlas-debug",
+  "version": "0.1.0",
+  "description": "Debug Atlas mapping/tracking sessions",
+  "main": "index.js",
+  "author": "Ben-han Sung",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "lint": "../../../../node_modules/.bin/eslint .",
+    "flow": "../../../../node_modules/.bin/flow"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ],
+    "sourceMaps": true,
+    "retainLines": true,
+    "plugins": [
+      "transform-class-properties",
+      "transform-object-rest-spread"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          [
+            "transform-require-ignore",
+            {
+              "extensions": [
+                ".css"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-require-ignore": "^0.1.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-expo": "^4.0.0",
+    "react-native": "0.57.0",
+    "react-native-fs": "^2.10",
+    "react-native-device-info": "^0.22.5",
+    "ubq-usagiv2-core": "0.1.0"
+  }
+}
