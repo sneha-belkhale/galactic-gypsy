@@ -2,6 +2,7 @@
   "name": "galactic-gypsy",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "react-scripts": "1.1.4",
     "soundcloud-badge": "^1.1.0",

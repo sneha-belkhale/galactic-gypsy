@@ -28,6 +28,7 @@ body {
   position: fixed;
   left: 20px;
   bottom: 30px;
+  z-index: 5;
 }
 
 #loadImg {
@@ -40,6 +41,17 @@ body {
   color: white;
   font-family: HeroFont;
   font-size: 19px;
+}
+
+#winState {
+  position: absolute;
+  z-index: 2;
+  top: 30px;
+  right: 30px;
+  color: white;
+  font-family: HeroFont;
+  font-size: 25px;
+  line-height: 1.6;
 }
 
 /* The Modal (background) */

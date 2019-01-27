@@ -361,6 +361,7 @@ function handleSpriteWorldCollisions(posX, posY){
 }
 
 var audiosLoaded = false;
+var totalAudiosCollected = 0;
 function handleActionOnCollide(worldItemIdx){
   //dictionary for popups
   var item = itemDictionary[worldItemIdx];
@@ -391,6 +392,9 @@ function handleActionOnCollide(worldItemIdx){
       }, 3000);
       audioArray[item.audioIdx].volume = 1.0;
       audioArray[item.audioIdx].collected = true;
+      totalAudiosCollected += 1;
+      var winStateText = document.getElementById('winState');
+      winStateText.innerHTML = totalAudiosCollected + ' / 7 ♦️';
     break;
   }
 
