@@ -36,13 +36,18 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-      <div id="homeScreen"></div>
+      <div id="homeScreen">
+        <div id="loadContainer">
+          <img id="loadImg" src="load.gif" alt="Smiley face" />
+          <span id="loadingText">Landing on the planet...</span>
+        </div>
+      </div>
       <div id="modalDialogue" class="modal">
 
       <!-- Modal content -->
       <div class="modal-content">
         <div class="close">&times;</div>
-        <p id="modalText">Some text in the Modal..</p>
+        <p id="modalText"></p>
       </div>
     </div>
   </body>

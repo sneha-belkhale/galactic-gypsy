@@ -13,12 +13,33 @@ body {
 
 #homeScreen {
   position: absolute;
-  background-image: url("./assets/ggjgamescreen.png");
+  background-image: url("./assets/ggjgamescreen.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: 100;
+  z-index: 2;
   width: 100%;
   height: 100%;
+}
+
+#loadContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: fixed;
+  left: 20px;
+  bottom: 30px;
+}
+
+#loadImg {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+#loadingText {
+  color: white;
+  font-family: HeroFont;
+  font-size: 19px;
 }
 
 /* The Modal (background) */
@@ -51,7 +72,7 @@ body {
   height: 40%;
 }
 
-p {
+#modalText {
   margin: 100px;
   color: white;
   font-family: HeroFont;
