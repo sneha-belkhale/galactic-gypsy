@@ -26,7 +26,7 @@ var objLoader = new THREE.OBJLoader();
 const WORLD_WIDTH = 475;
 const WORLD_HEIGHT = 475;
 const WORLD_PADDING = 200;
-const HERO_SPEED = 2;
+const HERO_SPEED = 0.5;
 export default function init() {
   /** BASIC THREE SETUP **/
   scene = new THREE.Scene();
@@ -41,7 +41,8 @@ export default function init() {
   renderer.antialias = true
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
-  window.addEventListener('keydown', moveSprite)
+  window.addEventListener('keydown', startMovingSprite);
+  window.addEventListener('keyup', stopMovingSprite);
 
   worldGrid = new WorldGrid(WORLD_WIDTH, WORLD_HEIGHT);
   incomingPos = new THREE.Vector2(0,0);
@@ -310,32 +311,75 @@ function fillWorldGridForMeshKiko(mesh, itemId){
 }
 
 var moveIdx = 0;
-function moveSprite(event) {
-  var incomingSriteIndex;
-  var moveIdxMapping = [2,0,2,1];
-
-  moveIdx ++;
-  if(moveIdx > 3 ){
-    moveIdx = 0;
-  }
-
+var moveIdxMapping = [2,0,2,1];
+var currentMovement = "stop"; //stop, left, right, up, down
+var incomingSriteIndex = 0;
+function startMovingSprite(event) {
   switch(event.keyCode){
     case 37:
-      incomingPos.set(heroMesh.position.x - HERO_SPEED, heroMesh.position.y)
-      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 2;
+	  currentMovement = "left";
     break;
     case 38:
-      incomingPos.set(heroMesh.position.x, heroMesh.position.y + HERO_SPEED)
-      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 3;
+	  currentMovement = "right";
     break;
     case 39:
-      incomingPos.set(heroMesh.position.x + HERO_SPEED, heroMesh.position.y)
-      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 1;
+	  currentMovement = "up";
     break;
     case 40:
-      incomingPos.set(heroMesh.position.x, heroMesh.position.y - HERO_SPEED)
-      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 0;
+	  currentMovement = "down";
     break;
+  }
+
+}
+
+function stopMovingSprite(event){
+  switch(event.keyCode){
+    case 37:
+      if(currentMovement=="left")
+        currentMovement = "stop";
+    break;
+    case 38:
+      if(currentMovement=="right")
+	    currentMovement = "stop";
+    break;
+    case 39:
+      if(currentMovement=="up")
+	    currentMovement = "stop";
+    break;
+    case 40:
+      if(currentMovement=="down")
+	    currentMovement = "stop";
+    break;
+  }
+  if(event.keyCode>=37 && event.keyCode<=40)
+	currentMovement = "stop";
+}
+
+function processSpriteMovement(){
+  moveIdx += 0.5; //Update movement sprite once for every other frame
+  if(moveIdx > 3.0 ){
+    moveIdx = 0.0;
+  }
+  
+  switch(currentMovement){
+	case "left":
+      incomingPos.set(heroMesh.position.x - HERO_SPEED, heroMesh.position.y)
+      incomingSriteIndex = moveIdxMapping[Math.floor(moveIdx)]*4 + 2;
+    break;
+	case "right":
+      incomingPos.set(heroMesh.position.x, heroMesh.position.y + HERO_SPEED)
+      incomingSriteIndex = moveIdxMapping[Math.floor(moveIdx)]*4 + 3;
+    break;
+	case "up":
+      incomingPos.set(heroMesh.position.x + HERO_SPEED, heroMesh.position.y)
+      incomingSriteIndex = moveIdxMapping[Math.floor(moveIdx)]*4 + 1;
+    break;
+	case "down":
+      incomingPos.set(heroMesh.position.x, heroMesh.position.y - HERO_SPEED)
+      incomingSriteIndex = moveIdxMapping[Math.floor(moveIdx)]*4 + 0;
+    break;
+    default:
+      incomingPos.set(heroMesh.position.x, heroMesh.position.y)
   }
 
   heroMesh.material.uniforms.frameIndex.value = incomingSriteIndex;
@@ -398,7 +442,8 @@ function handleActionOnCollide(worldItemIdx){
 
 }
 
-var lastTime = Date.now()
+var lastTime = Date.now();
+var nextMovementUpdateTime = Date.now();
 
 function update() {
   controls.update()
@@ -408,12 +453,18 @@ function update() {
   winSprite.position.y = heroMesh.position.y;
   var time = Date.now();
   if(time - lastTime > 100){
-    controls.setTargetPos(heroMesh.position.x, heroMesh.position.y)
+    //controls.setTargetPos(heroMesh.position.x, heroMesh.position.y)
     lastTime = Date.now()
     winSprite.material.uniforms.frameIndex.value += 1;
     if (winSprite.material.uniforms.frameIndex.value > 23){
       winSprite.material.uniforms.frameIndex.value = 0;
     }
+  }
+
+  while(time - nextMovementUpdateTime > 10){
+    processSpriteMovement();
+    controls.setTargetPos(heroMesh.position.x, heroMesh.position.y)
+    nextMovementUpdateTime += 10;
   }
 
 }
