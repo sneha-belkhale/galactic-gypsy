@@ -21,6 +21,17 @@ body {
   height: 100%;
 }
 
+#winState {
+  position: absolute;
+  z-index: 100;
+  top: 30px;
+  right: 30px;
+  color: white;
+  font-family: HeroFont;
+  font-size: 25px;
+  line-height: 1.6;
+}
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
