@@ -8,6 +8,7 @@ var OBJLoader = require('three-obj-loader')(THREE);
 
 
 var scene, camera, controls, renderer;
+var nextDialogMessage = undefined;
 
 var heroMesh;
 
@@ -84,6 +85,9 @@ export default function init() {
     //remove loading screen
     var homeScreen = document.getElementById('homeScreen');
     homeScreen.style.display = "none";
+    showDialog("• • • Year 2XXX<br>Awoke in hibernation chamber and landed on planet<br>(22° 15' 25.50\" / 114° 07' 29.26\")<br>Word has it that the crystals on this planet can be used as an energy source…");
+    nextDialogMessage = "The exploration begins! Could this be your long awaited home?<br><br>Instructions:<br>Use arrow keys to navigate. Look for the energy crystals, and see what else you could find on this planet!";
+    
 
   });
 
@@ -279,8 +283,20 @@ export default function init() {
   var span = document.getElementsByClassName("close")[0];
   var modal = document.getElementById('modalDialogue');
   span.onclick = function() {
-    modal.style.display = "none";
+    if(nextDialogMessage){
+      showDialog(nextDialogMessage);
+      nextDialogMessage = undefined;
+    }else{
+      modal.style.display = "none";
+    }
   }
+}
+
+function showDialog(text){
+  var modal = document.getElementById('modalDialogue');
+  modal.style.display = "block";
+  var modalText = document.getElementById('modalText');
+  modalText.innerHTML = text;
 }
 
 function fillWorldGridForMesh(mesh, itemId){
@@ -310,8 +326,8 @@ function fillWorldGridForMeshKiko(mesh, itemId){
 }
 
 var moveIdx = 0;
+var incomingSriteIndex = 0;
 function moveSprite(event) {
-  var incomingSriteIndex;
   moveIdx ++;
   if(moveIdx > 2 ){
     moveIdx = 0;
@@ -370,10 +386,7 @@ function handleActionOnCollide(worldItemIdx){
   }
   switch (item.type){
     case 'text':
-      var modal = document.getElementById('modalDialogue');
-      modal.style.display = "block";
-      var modalText = document.getElementById('modalText');
-      modalText.innerHTML = item.message;
+      showDialog(item.message);
     break;
     case 'audio':
       if(!audiosLoaded){
@@ -395,6 +408,10 @@ function handleActionOnCollide(worldItemIdx){
       totalAudiosCollected += 1;
       var winStateText = document.getElementById('winState');
       winStateText.innerHTML = totalAudiosCollected + ' / 7 ♦️';
+      if(totalAudiosCollected == 7){
+        showDialog("• • • Year 2XXX<br>Found all energy crystals on planet<br>(22° 15' 25.50\" / 114° 07' 29.26\").<br>It was an unfamiliar place, but it strangely felt like home…");
+        nextDialogMessage = "Perhaps there’s no such thing as \"home\"...?";
+      }
     break;
   }
 
