@@ -312,27 +312,29 @@ function fillWorldGridForMeshKiko(mesh, itemId){
 var moveIdx = 0;
 function moveSprite(event) {
   var incomingSriteIndex;
+  var moveIdxMapping = [2,0,2,1];
+
   moveIdx ++;
-  if(moveIdx > 2 ){
+  if(moveIdx > 3 ){
     moveIdx = 0;
   }
 
   switch(event.keyCode){
     case 37:
       incomingPos.set(heroMesh.position.x - HERO_SPEED, heroMesh.position.y)
-      incomingSriteIndex = moveIdx*4 + 2;
+      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 2;
     break;
     case 38:
       incomingPos.set(heroMesh.position.x, heroMesh.position.y + HERO_SPEED)
-      incomingSriteIndex = moveIdx*4 + 3;
+      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 3;
     break;
     case 39:
       incomingPos.set(heroMesh.position.x + HERO_SPEED, heroMesh.position.y)
-      incomingSriteIndex = moveIdx*4 + 1;
+      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 1;
     break;
     case 40:
       incomingPos.set(heroMesh.position.x, heroMesh.position.y - HERO_SPEED)
-      incomingSriteIndex = moveIdx*4 + 0;
+      incomingSriteIndex = moveIdxMapping[moveIdx]*4 + 0;
     break;
   }
 
